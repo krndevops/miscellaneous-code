@@ -17,3 +17,6 @@ To reset Kibana Password
 /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
 
 New Password - rLRyYZ=hiTQhM37k1whp
+
+
+
