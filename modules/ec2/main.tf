@@ -1,7 +1,7 @@
 
 resource "aws_instance" "ec2" {
   ami                         = data.aws_ami.centos8.image_id
-  instance_type               = var.tool.instance_type
+  instance_type               = var.instance_type
   vpc_security_group_ids      = ["sg-0a13f9496e8f730c7"]
   subnet_id                   = "subnet-0b5eda00048daa6c0"
   associate_public_ip_address = true
