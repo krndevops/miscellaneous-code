@@ -1,0 +1,9 @@
+- name: Add Sonarqube user
+  ansible.builtin.user:
+    name: sonarqube
+
+- name: Downlad Sonarqube
+  ansible.builtin.unarchive:
+    src: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-26.2.0.119303.zip
+    dest: /home/sonarqube
+    remote_src: yes
