@@ -1,3 +1,6 @@
+- name: Set Hostname
+  ansible.builtin.shell: set-hostname sonarqube
+
 - name: Add Sonarqube user
   ansible.builtin.user:
     name: sonarqube
@@ -7,6 +10,8 @@
     src: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-26.2.0.119303.zip
     dest: /home/sonarqube
     remote_src: yes
+    owner: sonarqube
+    group: sonarqube
 
 - name: Install Java
   ansible.builtin.dnf:
