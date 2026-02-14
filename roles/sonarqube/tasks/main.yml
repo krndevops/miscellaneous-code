@@ -5,28 +5,23 @@
   ansible.builtin.user:
    name: sonarqube
 
-# ----------------------------
-# Install Java 21 (Temurin)
-# ----------------------------
+- name: Download Temurin 21 tarball
+  ansible.builtin.get_url:
+    url: https://github.com/adoptium/temurin21-binaries/releases/latest/download/OpenJDK21U-jdk_x64_linux_hotspot.tar.gz
+    dest: /opt/OpenJDK21U-jdk_x64_linux_hotspot.tar.gz
+    mode: '0644'
 
-- name: Import Adoptium GPG key
-  ansible.builtin.rpm_key:
-    state: present
-    key: https://packages.adoptium.net/artifactory/api/gpg/key/public
+- name: Extract Temurin 21
+  ansible.builtin.unarchive:
+    src: /opt/OpenJDK21U-jdk_x64_linux_hotspot.tar.gz
+    dest: /opt/
+    remote_src: yes
 
-- name: Add Adoptium repository
-  ansible.builtin.yum_repository:
-    name: Adoptium
-    description: Adoptium Temurin Repository
-    baseurl: https://packages.adoptium.net/artifactory/rpm/centos/8/x86_64
-    enabled: true
-    gpgcheck: true
-    gpgkey: https://packages.adoptium.net/artifactory/api/gpg/key/public
-
-- name: Install Temurin 21 JDK
-  ansible.builtin.dnf:
-    name: temurin-21-jdk
-    state: present
+- name: Create Java symlink
+  ansible.builtin.file:
+    src: /opt/jdk-21
+    dest: /opt/java21
+    state: link
 
 - name: Set vm.max_map_count for SonarQube
   ansible.posix.sysctl:

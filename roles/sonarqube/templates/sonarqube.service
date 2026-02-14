@@ -7,9 +7,9 @@ Wants=network-online.target
 ExecStart=/home/sonarqube/sonarqube-26.2.0.119303/bin/linux-x86-64/sonar.sh start
 ExecStop=/home/sonarqube/sonarqube-26.2.0.119303/bin/linux-x86-64/sonar.sh stop
 ExecReload=/home/sonarqube/sonarqube-26.2.0.119303/bin/linux-x86-64/sonar.sh restart
-Environment="JAVA_HOME={{ temurin_java_home }}"
-Environment="SONAR_JAVA_PATH={{ temurin_java_home }}/bin/java"
-Environment="PATH={{ temurin_java_home }}/bin:/usr/bin:/bin"
+Environment="JAVA_HOME=/opt/java21"
+Environment="SONAR_JAVA_PATH=/opt/java21/bin/java"
+Environment="PATH=/opt/java21/bin:/usr/bin:/bin"
 Type=forking
 User=sonarqube
 Group=sonarqube
