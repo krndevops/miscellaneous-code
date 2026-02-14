@@ -1,5 +1,5 @@
 - name: Set Prompt
-  ansible.builtin.shell: set-prompt sonarqube
+  ansible.builtin.shell: set-hostname sonarqube
 
 - name: Install java
   ansible.builtin.dnf:
