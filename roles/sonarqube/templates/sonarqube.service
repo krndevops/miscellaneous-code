@@ -9,6 +9,8 @@ ExecStop=/home/sonarqube/sonarqube-26.2.0.119303/bin/linux-x86-64/sonar.sh stop
 ExecReload=/home/sonarqube/sonarqube-26.2.0.119303/bin/linux-x86-64/sonar.sh restart
 Type=forking
 User=sonarqube
+Group=sonar
+Restart=always
 
 
 [Install]
