@@ -8,22 +8,22 @@
 
 - name: Add sonarqube user
   ansible.builtin.user:
-    name: sonar
+    name: sonarqube
 
 - name: Sonar Directory
-  ansible.builtin.file:
-    path: /sonarqube
+  ansible.builtin.template:
+    path: /home/sonarqube
     state: directory
-    owner: sonar
-    group: sonar
+    owner: sonarqube
+    group: sonarqube
 
 - name: Download and extract sonarqube
   ansible.builtin.unarchive:
     remote_src: true
     src: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-10.6.0.92116.zip
-    dest: /sonarqube
-    owner: sonar
-    group: sonar
+    dest: /home/sonarqube
+    owner: sonarqube
+    group: sonarqube
 
 - name: Copy systemd file
   ansible.builtin.template:
@@ -33,6 +33,6 @@
 - name: Start service
   ansible.builtin.systemd_service:
     name: sonarqube
+    daemon-reload: yes
     state: restarted
     enabled: yes
-    daemon-reload: yes
