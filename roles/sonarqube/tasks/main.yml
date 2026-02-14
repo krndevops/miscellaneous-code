@@ -11,8 +11,8 @@
 
 - name: Import Adoptium GPG key
   ansible.builtin.rpm_key:
-  state: present
-  key: https://packages.adoptium.net/artifactory/api/gpg/key/public
+    state: present
+    key: https://packages.adoptium.net/artifactory/api/gpg/key/public
 
 - name: Add Adoptium repository
   ansible.builtin.yum_repository:
