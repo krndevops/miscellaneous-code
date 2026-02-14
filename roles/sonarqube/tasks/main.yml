@@ -1,63 +1,38 @@
-- name: Set Hostname
-  ansible.builtin.shell: set-hostname sonarqube
+- name: Set Prompt
+  ansible.builtin.shell: set-prompt sonarqube
 
-- name: Add Sonarqube user
+- name: Install java
+  ansible.builtin.dnf:
+    name: java-17-openjdk
+    state: installed
+
+- name: Add sonarqube user
   ansible.builtin.user:
-   name: sonarqube
+    name: sonar
 
-- name: Download Temurin 21 (LTS) tarball
-  ansible.builtin.get_url:
-    url: "https://api.adoptium.net/v3/binary/latest/21/ga/linux/x64/jdk/hotspot/normal/eclipse"
-    dest: /opt/temurin-21.tar.gz
-    mode: '0644'
-
-- name: Extract Temurin 21
-  ansible.builtin.unarchive:
-    src: /opt/temurin-21.tar.gz
-    dest: /opt/
-    remote_src: yes
-
-- name: Find extracted JDK directory
-  ansible.builtin.find:
-    paths: /opt
-    patterns: "jdk-21*"
-    file_type: directory
-  register: jdk_dir
-
-- name: Create stable java symlink
+- name: Sonar Directory
   ansible.builtin.file:
-    src: "{{ jdk_dir.files[0].path }}"
-    dest: /opt/java21
-    state: link
-    force: yes
+    path: /sonarqube
+    state: directory
+    owner: sonar
+    group: sonar
 
-- name: Set vm.max_map_count for SonarQube
-  ansible.posix.sysctl:
-    name: vm.max_map_count
-    value: "524288"
-    state: present
-    reload: yes
-
-- name: Downlad Sonarqube
+- name: Download and extract sonarqube
   ansible.builtin.unarchive:
-    src: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-26.2.0.119303.zip
-    dest: /home/sonarqube
-    remote_src: yes
-    owner: sonarqube
-    group: sonarqube
-    recurse: yes
+    remote_src: true
+    src: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-10.6.0.92116.zip
+    dest: /sonarqube
+    owner: sonar
+    group: sonar
 
-
-- name: Copy Sonarqube service file
+- name: Copy systemd file
   ansible.builtin.template:
     src: sonarqube.service
     dest: /etc/systemd/system/sonarqube.service
 
-
-
-- name: Start Sonarqube service
+- name: Start service
   ansible.builtin.systemd_service:
     name: sonarqube
-    daemon_reload: true
     state: restarted
-    enabled: true
+    enabled: yes
+    daemon-reload: yes
