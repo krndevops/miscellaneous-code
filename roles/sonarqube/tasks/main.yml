@@ -5,23 +5,31 @@
   ansible.builtin.user:
    name: sonarqube
 
-- name: Download Temurin 21 tarball
+- name: Download Temurin 21 (LTS) tarball
   ansible.builtin.get_url:
-    url: https://github.com/adoptium/temurin21-binaries/releases/latest/download/OpenJDK21U-jdk_x64_linux_hotspot.tar.gz
-    dest: /opt/OpenJDK21U-jdk_x64_linux_hotspot.tar.gz
+    url: "https://api.adoptium.net/v3/binary/latest/21/ga/linux/x64/jdk/hotspot/normal/eclipse"
+    dest: /opt/temurin-21.tar.gz
     mode: '0644'
 
 - name: Extract Temurin 21
   ansible.builtin.unarchive:
-    src: /opt/OpenJDK21U-jdk_x64_linux_hotspot.tar.gz
+    src: /opt/temurin-21.tar.gz
     dest: /opt/
     remote_src: yes
 
-- name: Create Java symlink
+- name: Find extracted JDK directory
+  ansible.builtin.find:
+    paths: /opt
+    patterns: "jdk-21*"
+    file_type: directory
+  register: jdk_dir
+
+- name: Create stable java symlink
   ansible.builtin.file:
-    src: /opt/jdk-21
+    src: "{{ jdk_dir.files[0].path }}"
     dest: /opt/java21
     state: link
+    force: yes
 
 - name: Set vm.max_map_count for SonarQube
   ansible.posix.sysctl:
