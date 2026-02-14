@@ -15,7 +15,7 @@
 
 - name: Install Java
   ansible.builtin.dnf:
-    name: java-17-openjdk
+    name: java-17-openjdk-src.x86_64
     state: installed
 
 - name: Copy Sonarqube service file
