@@ -19,6 +19,7 @@
         - java-17-openjdk
         - java-17-openjdk-devel
       state: installed
+      daemon_reload: true
 
 - name: Copy Sonarqube service file
   ansible.builtin.template:
