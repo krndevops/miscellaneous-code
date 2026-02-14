@@ -36,14 +36,8 @@ resource "aws_lb_listener_rule" "rule" {
   }
 
   condition {
-    path_pattern {
-      values = ["${var.tool}.kdevops.online"]
-    }
-  }
-
-  condition {
     host_header {
-      values = ["example.com"]
+      values = ["${var.tool}.kdevops.online"]
     }
   }
 }
