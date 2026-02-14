@@ -20,16 +20,6 @@
         - java-17-openjdk-devel
       state: installed
 
-- name: Set Java 17 as default alternative
-  ansible.builtin.alternatives:
-    name: java
-    path: /usr/lib/jvm/java-17-openjdk/bin/java
-
-- name: Set Javac 17 as default alternative
-  ansible.builtin.alternatives:
-     name: javac
-     path: /usr/lib/jvm/java-17-openjdk/bin/javac
-
 - name: Copy Sonarqube service file
   ansible.builtin.template:
     src: sonarqube.service
