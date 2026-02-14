@@ -3,7 +3,37 @@
 
 - name: Add Sonarqube user
   ansible.builtin.user:
-    name: sonarqube
+   name: sonarqube
+
+# ----------------------------
+# Install Java 21 (Temurin)
+# ----------------------------
+
+- name: Import Adoptium GPG key
+  ansible.builtin.rpm_key:
+  state: present
+  key: https://packages.adoptium.net/artifactory/api/gpg/key/public
+
+- name: Add Adoptium repository
+  ansible.builtin.yum_repository:
+    name: Adoptium
+    description: Adoptium Temurin Repository
+    baseurl: https://packages.adoptium.net/artifactory/rpm/centos/8/x86_64
+    enabled: true
+    gpgcheck: true
+    gpgkey: https://packages.adoptium.net/artifactory/api/gpg/key/public
+
+- name: Install Temurin 21 JDK
+  ansible.builtin.dnf:
+    name: temurin-21-jdk
+    state: present
+
+- name: Set vm.max_map_count for SonarQube
+  ansible.posix.sysctl:
+    name: vm.max_map_count
+    value: "524288"
+    state: present
+    reload: yes
 
 - name: Downlad Sonarqube
   ansible.builtin.unarchive:
@@ -12,13 +42,7 @@
     remote_src: yes
     owner: sonarqube
     group: sonarqube
-
-- name: Install Java
-  ansible.builtin.dnf:
-      name:
-        - java-21-openjdk
-        - java-21-openjdk-devel
-      state: installed
+    recurse: yes
 
 
 - name: Copy Sonarqube service file
@@ -26,12 +50,7 @@
     src: sonarqube.service
     dest: /etc/systemd/system/sonarqube.service
 
-- name: Set vm.max_map_count for SonarQube
-  ansible.posix.sysctl:
-    name: vm.max_map_count
-    value: "524288"
-    state: present
-    reload: yes
+
 
 - name: Start Sonarqube service
   ansible.builtin.systemd_service:

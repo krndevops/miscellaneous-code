@@ -1,0 +1,5 @@
+sonar_version: "26.2.0.119303"
+sonar_user: "sonarqube"
+sonar_home: "/home/sonarqube"
+sonar_install_dir: "/home/sonarqube/sonarqube-26.2.0.119303"
+temurin_java_home: "/usr/lib/jvm/temurin-21-jdk"
