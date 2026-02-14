@@ -10,13 +10,6 @@
   ansible.builtin.user:
     name: sonarqube
 
-- name: Sonar Directory
-  ansible.builtin.template:
-    path: /home/sonarqube
-    state: directory
-    owner: sonarqube
-    group: sonarqube
-
 - name: Download and extract sonarqube
   ansible.builtin.unarchive:
     remote_src: true
