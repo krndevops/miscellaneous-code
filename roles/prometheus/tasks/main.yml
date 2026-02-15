@@ -62,7 +62,7 @@
 
 - name: Import Grafana dashboard foo
   community.grafana.grafana_dashboard:
-    grafana_url: http://172.31.76.46:3000
+    grafana_url: https://grafana.kdevops.online
     grafana_api_key: "{{ lookup('amazon.aws.aws_ssm', 'grafana.apikey', region='us-east-1' ) }}"
     state: present
     commit_message: Updated by ansible

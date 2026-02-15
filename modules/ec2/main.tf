@@ -28,6 +28,7 @@ resource "aws_route53_record" "record" {
 }
 
 resource "aws_lb_listener_rule" "rule" {
+  count       = length(var.dns_names)
   listener_arn = var.listener_arn
   priority     = var.priority
 
