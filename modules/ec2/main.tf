@@ -4,7 +4,7 @@ resource "aws_instance" "ec2" {
   instance_type               = var.instance_type
   vpc_security_group_ids      = ["sg-0a13f9496e8f730c7"]
   subnet_id                   = "subnet-0b5eda00048daa6c0"
-  associate_public_ip_address = true
+
   instance_market_options {
     market_type = "spot"
     spot_options {
