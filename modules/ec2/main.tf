@@ -18,9 +18,10 @@ resource "aws_instance" "ec2" {
 }
 
 
-resource "aws_route53_record" "sonarqube" {
+resource "aws_route53_record" "record" {
+  count   = length(var.dns_names)
   zone_id = "Z0266758558URTEO39RC"
-  name    = var.tool
+  name    = element(var.dns_names, count.index)
   type    = "CNAME"
   ttl     = 30
   records = [var.dns_name]
