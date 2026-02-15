@@ -26,6 +26,14 @@
     src: logstash.conf
     dest: /etc/logstash/conf.d/logstash.conf
 
+- name: Disable Elasticsearch security (LAB ONLY)
+  ansible.builtin.lineinfile:
+    path: /etc/elasticsearch/elasticsearch.yml
+    line: "{{ item }}"
+  loop:
+    - "xpack.security.enabled: false"
+    - "xpack.security.http.ssl.enabled: false"
+
 - name: Start and enable Elasticsearch service
   ansible.builtin.systemd_service:
     name: "{{item}}"
