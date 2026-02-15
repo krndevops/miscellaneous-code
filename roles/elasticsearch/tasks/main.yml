@@ -1,52 +1,38 @@
-- name: Set Hostname
-  ansible.builtin.shell: set-hostname elk
+- name: set hostname
+  ansible.builtin.shell: set-hostname elasticsearch
 
-- name: Copy Elasticsearch repo file
+- name: Copy Elastic Repo file
   ansible.builtin.template:
     src: elastic.repo
     dest: /etc/yum.repos.d/elastic.repo
 
-- name: Install ELK
+- name: Install ELK Stack
   ansible.builtin.dnf:
-    name: "{{item}}"
-    state: present
+    name: "{{ item }}"
+    state: installed
   loop:
     - elasticsearch
     - kibana
     - logstash
     - nginx
 
-- name: Copy Nginx configuration file
+- name: Copy Nginx Config file
   ansible.builtin.template:
     src: nginx.conf
     dest: /etc/nginx/nginx.conf
 
-- name: Copy Logstash configuration file
+- name: Copy Logstash config
   ansible.builtin.template:
     src: logstash.conf
     dest: /etc/logstash/conf.d/logstash.conf
 
-- name: Disable Elasticsearch security (LAB ONLY)
-  ansible.builtin.lineinfile:
-    path: /etc/elasticsearch/elasticsearch.yml
-    line: "{{ item }}"
-  loop:
-    - "xpack.security.enabled: false"
-    - "xpack.security.http.ssl.enabled: false"
-
-- name: Start and enable Elasticsearch service
+- name: Start ELK Stack
   ansible.builtin.systemd_service:
-    name: "{{item}}"
-    state: started
-    enabled: true
-    daemon_reload: true
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
   loop:
     - elasticsearch
     - kibana
     - logstash
     - nginx
-
-
-
-
-
