@@ -53,7 +53,7 @@
       name: grafana-server
       state: restarted
       enabled: yes
-  when: out.status.ActiveState != "active"
+  when: out.failed
 
 - name: Copy Grafana Json File
   ansible.builtin.copy:
