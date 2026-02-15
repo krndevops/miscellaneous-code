@@ -16,6 +16,18 @@
     - logstash
     - nginx
 
+- name: Fix Elasticsearch directory permissions
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: elasticsearch
+    group: elasticsearch
+    recurse: yes
+  loop:
+    - /etc/elasticsearch
+    - /var/lib/elasticsearch
+    - /var/log/elasticsearch
+
+
 - name: Copy Nginx Config file
   ansible.builtin.template:
     src: nginx.conf
