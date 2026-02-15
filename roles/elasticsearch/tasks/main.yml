@@ -38,6 +38,27 @@
     src: logstash.conf
     dest: /etc/logstash/conf.d/logstash.conf
 
+- name: List Elasticsearch keystore entries
+  become: yes
+  become_user: elasticsearch
+  command: /usr/share/elasticsearch/bin/elasticsearch-keystore list
+  register: es_keystore_list
+  changed_when: false
+  failed_when: false
+
+- name: Remove transport keystore password if present
+  become: yes
+  become_user: elasticsearch
+  command: /usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.transport.ssl.keystore.secure_password
+  when: "'xpack.security.transport.ssl.keystore.secure_password' in es_keystore_list.stdout"
+
+- name: Remove transport truststore password if present
+  become: yes
+  become_user: elasticsearch
+  command: /usr/share/elasticsearch/bin/elasticsearch-keystore remove xpack.security.transport.ssl.truststore.secure_password
+  when: "'xpack.security.transport.ssl.truststore.secure_password' in es_keystore_list.stdout"
+
+
 - name: Start ELK Stack
   ansible.builtin.systemd_service:
     name: "{{ item }}"
