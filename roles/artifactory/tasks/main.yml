@@ -3,7 +3,7 @@
 
 - name: Copy Jfrog Repo
   amsible.builtin.template:
-    source: artifactory.repo
+    src: artifactory.repo
     dest: /etc/yum.repos.d/artifactory-pro-rpms.repo
 
 - name: Install Java and Jfrog Artifactory
