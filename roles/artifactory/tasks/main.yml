@@ -1,24 +1,23 @@
 - name: Set Hostname For Server
   ansible.builtin.shell: set-hostname artifactory
 
-- name: Copy Jfrog Repo
-  amsible.builtin.template:
+- name: Copy Jfrog repo
+  ansible.builtin.template:
     src: artifactory.repo
-    dest: /etc/yum.repos.d/artifactory-pro-rpms.repo
+    dest: /etc/yum.repos.d/artifactory.repo
 
-- name: Install Java and Jfrog Artifactory
+- name: Install Jfrog and Java
   ansible.builtin.dnf:
     name:
       - java-17-openjdk
       - jfrog-artifactory-oss
     state: installed
 
-- name: Start and Enable Artifactory Service
+- name: Start Artifactory Service
   ansible.builtin.systemd_service:
-      name: artifactory
-      state: started
-      enabled: true
-
+    name: artifactory
+    state: started
+    enabled: yes
 
 
 
