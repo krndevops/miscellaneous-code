@@ -36,6 +36,13 @@ variable "tool" {
 
     }
 
+    alertmanager = {
+      instance_type = "t3.medium"
+      port          = 8081
+      priority      = 105
+
+    }
+
   }
 
 }
