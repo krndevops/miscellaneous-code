@@ -13,6 +13,11 @@
       - jfrog-artifactory-oss
     state: installed
 
+- name: Fixing and enabling Non Postgres sql configuration
+  ansible.builtin.template:
+    src: system.yaml
+    dest: /opt/jfrog/artifactory/var/etc/system.yaml
+
 - name: Start Artifactory Service
   ansible.builtin.systemd_service:
     name: artifactory

@@ -1,0 +1,7 @@
+configVersion: 1
+shared:
+    security:
+    node:
+    database:
+      allowNonPostgresql: true
+access:
