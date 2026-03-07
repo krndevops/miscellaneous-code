@@ -25,15 +25,15 @@
    msg: "Disk size check : {{ disk_gb }}GB"
 
 - name: Extend partition
-  shell: growpart /dev/nvme0n1 4
+  shell: growpart /dev/nvme0n1 1
   ignore_errors: yes
 
 - name: Resize physical volume
-  shell: pvresize /dev/nvme0n1p4
+  shell: pvresize /dev/nvme0n1p1
   ignore_errors: yes
 
 - name: Extend root logical volume
-  shell: lvextend -r -L +10G /dev/RootVG/rootVol
+  shell: lvextend -r -L +50G /dev/RootVG/rootVol
   ignore_errors: yes
 
 - name: Extend var logical volume
