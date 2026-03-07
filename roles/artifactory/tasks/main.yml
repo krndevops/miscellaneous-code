@@ -24,21 +24,92 @@
   debug:
    msg: "Disk size check : {{ disk_gb }}GB"
 
-- name: Extend partition
-  shell: growpart /dev/nvme0n1 1
+- vars:
+  aws_region: ap-south-1
+  target_size: 50
+
+
+
+- name: Install required packages
+  dnf:
+    - cloud-utils-growpart
+    - python3-boto3
+  state: present
+
+
+
+- name: Get IMDSv2 token
+  uri:
+      url: http://169.254.169.254/latest/api/token
+      method: PUT
+      headers:
+        X-aws-ec2-metadata-token-ttl-seconds: "21600"
+      return_content: yes
+      register: token
+
+
+
+- name: Get volume information
+  amazon.aws.ec2_vol_info:
+    region: "{{ aws_region }}"
+    filters:
+      attachment.instance-id: "{{ instance_id.content }}"
+      register: volume_info
+
+- name: Set root volume id
+  set_fact:
+    root_volume: "{{ volume_info.volumes[0].id }}"
+
+- name: Print detected volume
+  debug:
+   msg: "Root EBS volume is {{ root_volume }}"
+
+- name: Expand EBS volume to 50GB
+  amazon.aws.ec2_vol:
+    id: "{{ root_volume }}"
+    region: "{{ aws_region }}"
+    size: "{{ target_size }}"
+    state: present
+
+- name: Wait for AWS to apply modification
+  pause:
+  seconds: 20
+
+- name: Detect root disk
+  shell: lsblk -no pkname $(df / | tail -1 | awk '{print $1}')
+  register: root_disk
+
+- name: Detect root partition
+  shell: df / | tail -1 | awk '{print $1}'
+  register: root_partition
+
+- name: Expand partition
+  command: growpart /dev/{{ root_disk.stdout }} 1
   ignore_errors: yes
 
-- name: Resize physical volume
-  shell: pvresize /dev/nvme0n1p1
-  ignore_errors: yes
+    ############################################
+    # Expand Filesystem
+    ############################################
 
-- name: Extend root logical volume
-  shell: lvextend -r -L +50G /dev/RootVG/rootVol
-  ignore_errors: yes
+- name: Detect filesystem
+  command: df -T /
+  register: fs
 
-- name: Extend var logical volume
-  shell: lvextend -r -L +5G /dev/RootVG/varVol
-  ignore_errors: yes
+- name: Resize XFS filesystem
+  command: xfs_growfs /
+  when: "'xfs' in fs.stdout"
+
+- name: Resize EXT filesystem
+  command: resize2fs "{{ root_partition.stdout }}"
+  when: "'ext4' in fs.stdout"
+
+
+- name: Verify new disk size
+  command: df -h
+  register: disk_check
+
+- debug:
+    var: disk_check.stdout_lines
 
 - name: Copy Jfrog repo
   ansible.builtin.template:
