@@ -78,7 +78,8 @@
   amazon.aws.ec2_vol:
     id: "{{ root_volume }}"
     region: "{{ aws_region }}"
-    size: "{{ target_size }}"
+    volume_size: "{{ target_size }}"
+    modify_volume: true
     state: present
 
 - name: Wait for AWS to apply modification
