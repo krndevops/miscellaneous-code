@@ -40,7 +40,7 @@
       headers:
         X-aws-ec2-metadata-token-ttl-seconds: "21600"
       return_content: yes
-      register: token
+  register: token
 
 
 
@@ -49,7 +49,7 @@
     region: "{{ aws_region }}"
     filters:
       attachment.instance-id: "{{ instance_id.content }}"
-      register: volume_info
+  register: volume_info
 
 - name: Set root volume id
   set_fact:
