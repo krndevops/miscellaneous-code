@@ -1,6 +1,11 @@
 - name: Set Hostname For Server
   ansible.builtin.shell: set-hostname artifactory
 
+- name: Install LVM tools
+  dnf:
+    name: lvm2
+    state: present
+
 - name: Get disk size of nvme0n1 or sda
   shell: |
     lsblk -bdno SIZE /dev/nvme0n1 2>/dev/null || lsblk -bdno SIZE /dev/sda 2>/dev/null
