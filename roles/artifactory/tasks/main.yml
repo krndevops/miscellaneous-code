@@ -26,10 +26,10 @@
 
 - name: Install required packages
   ansible.builtin.dnf:
-   name:
-     - cloud-utils-growpart
-     - python3-boto3
-  state: present
+    name:
+      - cloud-utils-growpart
+      - python3-boto3
+    state: installed
 
 
 
