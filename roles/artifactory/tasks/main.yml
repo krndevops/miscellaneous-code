@@ -1,6 +1,41 @@
 - name: Set Hostname For Server
   ansible.builtin.shell: set-hostname artifactory
 
+- name: Get disk size of nvme0n1 or sda
+  shell: |
+    lsblk -bdno SIZE /dev/nvme0n1 2>/dev/null || lsblk -bdno SIZE /dev/sda 2>/dev/null
+    register: disk_size
+    changed_when: false
+
+- name: Convert disk size to GB
+  set_fact:
+     disk_gb: "{{ (disk_size.stdout | int) // 1073741824 }}"
+
+- name: Fail if disk size is less than 50GB
+  fail:
+    msg: "Disk size is {{ disk_gb }}GB. Minimum 50GB required for Artifactory."
+  when: disk_gb | int < 50
+
+- name: Print disk size check result
+  debug:
+   msg: "Disk size check passed: {{ disk_gb }}GB"
+
+- name: Extend partition
+  shell: growpart /dev/nvme0n1 4
+  ignore_errors: yes
+
+- name: Resize physical volume
+  shell: pvresize /dev/nvme0n1p4
+  ignore_errors: yes
+
+- name: Extend root logical volume
+  shell: lvextend -r -L +10G /dev/RootVG/rootVol
+  ignore_errors: yes
+
+- name: Extend var logical volume
+  shell: lvextend -r -L +5G /dev/RootVG/varVol
+  ignore_errors: yes
+
 - name: Copy Jfrog repo
   ansible.builtin.template:
     src: artifactory.repo
@@ -21,6 +56,7 @@
 - name: Start Artifactory Service
   ansible.builtin.systemd_service:
     name: artifactory
+    daemon_reload: yes
     state: started
     enabled: yes
 

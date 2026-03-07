@@ -1,4 +1,10 @@
 configVersion: 1
 shared:
   database:
-    allowNonPostgresql: true
+      type: derby
+      allowNonPostgresql: true
+  jfconnect:
+    enabled: false
+  owner: artifactory
+  group: artifactory
+  mode: '0644'
