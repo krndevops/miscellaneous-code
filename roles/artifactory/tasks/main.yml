@@ -24,12 +24,6 @@
   debug:
    msg: "Disk size check : {{ disk_gb }}GB"
 
-- vars:
-  aws_region: us-east-1
-  target_size: 50
-
-
-
 - name: Install required packages
   dnf:
     - cloud-utils-growpart
