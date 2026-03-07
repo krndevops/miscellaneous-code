@@ -25,9 +25,10 @@
    msg: "Disk size check : {{ disk_gb }}GB"
 
 - name: Install required packages
-  dnf:
-    - cloud-utils-growpart
-    - python3-boto3
+  ansible.builtin.dnf:
+   name:
+     - cloud-utils-growpart
+     - python3-boto3
   state: present
 
 
