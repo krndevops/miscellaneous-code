@@ -42,6 +42,14 @@
       return_content: yes
   register: token
 
+- name: Get instance id
+  uri:
+    url: http://169.254.169.254/latest/meta-data/instance-id
+    headers:
+      X-aws-ec2-metadata-token: "{{ token.content }}"
+    return_content: yes
+  register: instance_id
+
 
 
 - name: Get volume information
