@@ -68,7 +68,7 @@
 
 - name: Wait for AWS to apply modification
   pause:
-  seconds: 20
+    seconds: 20
 
 - name: Detect root disk
   shell: lsblk -no pkname $(df / | tail -1 | awk '{print $1}')
