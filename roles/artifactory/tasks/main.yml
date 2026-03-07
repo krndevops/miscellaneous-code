@@ -29,6 +29,7 @@
     name:
       - cloud-utils-growpart
       - python3-boto3
+      - python3-packaging
     state: installed
 
 

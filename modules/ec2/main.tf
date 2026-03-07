@@ -11,6 +11,8 @@ resource "aws_instance" "ec2" {
       instance_interruption_behavior = "stop"
       spot_instance_type             = "persistent"
     }
+
+
   }
   tags = {
     Name = var.tool
