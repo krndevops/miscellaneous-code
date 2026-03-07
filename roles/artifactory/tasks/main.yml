@@ -37,6 +37,7 @@
       - boto3
       - botocore
       - packaging
+    state: latest
 
 
 
@@ -57,7 +58,11 @@
     return_content: yes
   register: instance_id
 
-
+- name: Get availability zone
+  uri:
+    url: http://169.254.169.254/latest/meta-data/placement/availability-zone
+    return_content: yes
+  register: az
 
 - name: Get volume information
   amazon.aws.ec2_vol_info:
@@ -76,11 +81,12 @@
 
 - name: Expand EBS volume to 50GB
   amazon.aws.ec2_vol:
-    id: "{{ root_volume }}"
-    region: "{{ aws_region }}"
-    volume_size: "{{ target_size }}"
-    modify_volume: true
-    state: present
+      id: "{{ root_volume }}"
+      region: "{{ aws_region }}"
+      volume_size: "{{ target_size }}"
+      modify_volume: true
+      zone: "{{ az.content }}"
+      state: present
 
 - name: Wait for AWS to apply modification
   pause:
