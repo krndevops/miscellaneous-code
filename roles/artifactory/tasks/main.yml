@@ -4,8 +4,8 @@
 - name: Get disk size of nvme0n1 or sda
   shell: |
     lsblk -bdno SIZE /dev/nvme0n1 2>/dev/null || lsblk -bdno SIZE /dev/sda 2>/dev/null
-    register: disk_size
-    changed_when: false
+  register: disk_size
+  changed_when: false
 
 - name: Convert disk size to GB
   set_fact:
