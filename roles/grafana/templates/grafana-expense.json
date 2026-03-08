@@ -94,7 +94,7 @@
         {
           "editorMode": "code",
           "expr": "node_systemd_unit_state{exported_name=\"nginx.service\", state=\"active\"}",
-          "legendFormat": "{{exported_name}}",
+          "legendFormat": {% raw %}"{{exported_name}}",{% endraw %}
           "range": true,
           "refId": "A"
         },
@@ -107,7 +107,7 @@
           "expr": "node_systemd_unit_state{exported_name=\"backend.service\", state=\"active\"}",
           "hide": false,
           "instant": false,
-          "legendFormat": "{{exported_name}}",
+          "legendFormat": {% raw %}"{{exported_name}}",{% endraw %}
           "range": true,
           "refId": "B"
         }
@@ -301,7 +301,7 @@
         {
           "editorMode": "code",
           "expr": "(1 - ((node_memory_MemFree_bytes + node_memory_Cached_bytes + node_memory_Buffers_bytes)/node_memory_MemTotal_bytes)) * 100",
-          "legendFormat": "{{name}}",
+          "legendFormat": {% raw %}"{{name}}",{% endraw %}
           "range": true,
           "refId": "A"
         }
@@ -397,7 +397,7 @@
         {
           "editorMode": "code",
           "expr": "increase(node_ethtool_pps_allowance_exceeded[5m])",
-          "legendFormat": "{{name}}",
+          "legendFormat": {% raw %}"{{name}}",{% endraw %}
           "range": true,
           "refId": "A"
         }
@@ -481,7 +481,7 @@
           },
           "editorMode": "code",
           "expr": "up{job=\"ec2\"}",
-          "legendFormat": "{{name}}",
+          "legendFormat": {% raw %}"{{name}}",{% endraw %}
           "range": true,
           "refId": "A"
         }
