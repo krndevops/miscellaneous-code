@@ -25,7 +25,7 @@
   when: out.failed
 
 - name: Copy Grafana Json File
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: grafana-expense.json
     dest: /tmp/grafana-expense.json
 
