@@ -1,9 +1,17 @@
-
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "6.17.0"
+    }
+  }
+}
 resource "aws_instance" "ec2" {
   ami                         = data.aws_ami.centos8.image_id
   instance_type               = var.instance_type
   vpc_security_group_ids      = ["sg-0a13f9496e8f730c7"]
   subnet_id                   = "subnet-0b5eda00048daa6c0"
+  iam_instance_profile        = aws_iam_instance_profile.main.name
 
   instance_market_options {
     market_type = "spot"
@@ -63,4 +71,46 @@ resource "aws_lb_target_group_attachment" "attach" {
   target_group_arn = aws_lb_target_group.tg.arn
   target_id        = aws_instance.ec2.id
   port             = var.port
+}
+
+resource "aws_iam_role" "main" {
+  name = "${var.tool}-role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      },
+    ]
+  })
+}
+
+resource "aws_iam_instance_profile" "main" {
+  name = "${var.tool}-role"
+  role = aws_iam_role.main.name
+}
+
+resource "aws_iam_role_policy" "main" {
+  name = "${var.tool}-role-policy"
+  role = aws_iam_role.main.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = var.policy_list
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "attach" {
+  policy_arn = aws_iam_role_policy.main.name
+  role       = aws_iam_role.main.name
 }

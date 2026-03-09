@@ -4,6 +4,7 @@ variable "tool" {
       instance_type = "t3.large"
       port          = 9000
       priority      = 100
+      policy_list   = []
 
     }
 
@@ -12,6 +13,7 @@ variable "tool" {
       instance_type = "m6in.large"
       port          = 9200
       priority      = 101
+      policy_list   = []
 
     }
 
@@ -19,6 +21,8 @@ variable "tool" {
       instance_type = "t3.small"
       port          = 9090
       priority      = 102
+      policy_list   = ["ec2:DescribeInstances",
+        "ec2:DescribeAvailabilityZones"]
 
     }
 
@@ -26,6 +30,7 @@ variable "tool" {
       instance_type = "t3.small"
       port          = 3000
       priority      = 103
+      policy_list   = []
 
     }
 
@@ -33,6 +38,7 @@ variable "tool" {
       instance_type = "t3.small"
       port          = 9093
       priority      = 104
+      policy_list   = []
 
     }
 
@@ -40,6 +46,12 @@ variable "tool" {
       instance_type = "t3.large"
       port          = 8082
       priority      = 105
+      policy_list   = ["ec2:ModifyVolume",
+        "ec2:DescribeVolumeStatus",
+        "ec2:DescribeTags",
+        "ec2:DescribeVolumes",
+        "ec2:DescribeVolumesModifications",
+        "ec2:DescribeVolumeAttribute"]
 
 
     }
