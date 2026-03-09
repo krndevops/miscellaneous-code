@@ -98,6 +98,7 @@ resource "aws_iam_instance_profile" "main" {
 
 
 resource "aws_iam_policy" "main" {
+  count       = length(var.policy_list)
   name        = "${var.tool}-role-policy"
   path        = "/"
   description = "${var.tool}-role-policy"
@@ -116,6 +117,7 @@ resource "aws_iam_policy" "main" {
 }
 
 resource "aws_iam_role_policy_attachment" "attach" {
-  policy_arn = aws_iam_policy.main.arn
+  count      = length(var.policy_list)
+  policy_arn = aws_iam_policy.main[0].arn
   role       = aws_iam_role.main.name
 }
