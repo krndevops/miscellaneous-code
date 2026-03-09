@@ -92,7 +92,7 @@ resource "aws_iam_role" "main" {
 }
 
 resource "aws_iam_instance_profile" "main" {
-  name = "${var.tool}-role-prfile"
+  name = "${var.tool}-instance-profile"
   role = aws_iam_role.main.name
 }
 
