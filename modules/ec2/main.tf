@@ -75,6 +75,7 @@ resource "aws_lb_target_group_attachment" "attach" {
 
 resource "aws_iam_role" "main" {
   name = "${var.tool}-role"
+
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -95,14 +96,18 @@ resource "aws_iam_instance_profile" "main" {
   role = aws_iam_role.main.name
 }
 
+
 resource "aws_iam_policy" "main" {
-  name = "${var.tool}-role-policy"
-  role = aws_iam_role.main.name
+  name        = "${var.tool}-role-policy"
+  path        = "/"
+  description = "${var.tool}-role-policy"
+
+
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
-        Action = var.policy_list
+        Action   = var.policy_list
         Effect   = "Allow"
         Resource = "*"
       },
