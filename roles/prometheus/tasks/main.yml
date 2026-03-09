@@ -1,3 +1,6 @@
+- name: Set Hostname For Server
+  ansible.builtin.shell: set-hostname prometheus
+
 - name: Download Prometheus
   ansible.builtin.unarchive:
     src: https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz
