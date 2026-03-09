@@ -11,7 +11,7 @@ variable "tool" {
 
     elasticsearch = {
       instance_type = "m6in.large"
-      port          = 9200
+      port          = 80
       priority      = 101
       policy_list   = []
 
