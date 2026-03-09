@@ -21,8 +21,7 @@ variable "tool" {
       instance_type = "t3.small"
       port          = 9090
       priority      = 102
-      policy_list   = ["ec2:DescribeInstances",
-        "ec2:DescribeAvailabilityZones"]
+      policy_list   = ["ec2:Describe*"]
 
     }
 
@@ -47,11 +46,7 @@ variable "tool" {
       port          = 8082
       priority      = 105
       policy_list   = ["ec2:ModifyVolume",
-        "ec2:DescribeVolumeStatus",
-        "ec2:DescribeTags",
-        "ec2:DescribeVolumes",
-        "ec2:DescribeVolumesModifications",
-        "ec2:DescribeVolumeAttribute"]
+        "ec2:Describe*"]
 
 
     }
