@@ -97,7 +97,7 @@ resource "aws_iam_instance_profile" "main" {
 
 resource "aws_iam_policy" "main" {
   name = "${var.tool}-role-policy"
-  role = aws_iam_role.main.id
+  role = aws_iam_role.main.name
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
