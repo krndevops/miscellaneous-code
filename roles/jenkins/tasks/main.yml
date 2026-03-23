@@ -1,3 +1,6 @@
+- name: Set Hostname For Server
+  ansible.builtin.shell: set-hostname jenkins
+
 - name: Copy Jenkins Repo File
   ansible.builtin.template:
     src: jenkins.repo
@@ -7,9 +10,12 @@
   ansible.builtin.dnf:
     name:
       - fontconfig
-      - java-21-openjdk
+      - java-17-openjdk
       - jenkins
     state: installed
+
+- name: Ensure Java 17 is default
+  ansible.builtin.shell: alternatives --set java /usr/lib/jvm/java-17-openjdk*/bin/java
 
 - name: Start Jenkins Service
   ansible.builtin.systemd_service:
