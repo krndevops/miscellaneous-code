@@ -59,6 +59,14 @@ variable "tool" {
 
     }
 
+    load-runner = {
+      instance_type = "t3.small"
+      port          = 8080
+      priority      = 107
+      policy_list   = []
+
+    }
+
   }
 
 }
