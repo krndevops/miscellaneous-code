@@ -12,3 +12,8 @@
     state: installed
 
 - name: Start Jenkins Service
+  ansible.builtin.systemd_service:
+    name: jenkins
+    state: restarted
+    enabled: true
+
