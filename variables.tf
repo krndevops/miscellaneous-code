@@ -59,7 +59,7 @@ variable "tool" {
 
     }
 
-    load-runner = {
+    jenkins = {
       instance_type = "t3.small"
       port          = 8080
       priority      = 107
