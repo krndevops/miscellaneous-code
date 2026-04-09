@@ -9,3 +9,4 @@ while true ; do
   curl -X DELETE $url/api/transaction &>>/tmp/out
   sleep $(echo $RANDOM | cut -c3)
 done
+
