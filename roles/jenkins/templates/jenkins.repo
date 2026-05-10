@@ -1,8 +1,6 @@
 
+[jenkins]
 name=Jenkins-stable
-enabled=1
-type=rpm-md
 baseurl=https://pkg.jenkins.io/redhat-stable/
-gpgkey=https://pkg.jenkins.io/rpm-stable/repodata/repomd.xml.key
+enabled=1
 gpgcheck=0
-repo_gpgcheck=0
