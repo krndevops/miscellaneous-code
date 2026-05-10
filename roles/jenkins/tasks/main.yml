@@ -6,17 +6,22 @@
     src: jenkins.repo
     dest: /etc/yum.repos.d/jenkins.repo
 
+- name: Remove old Jenkins
+  ansible.builtin.dnf:
+    name: jenkins
+    state: absent
+
 - name: Install Jenkins
   ansible.builtin.dnf:
     name:
       - fontconfig
-      - java-17-openjdk
-      - jenkins-2.462.3
+      - java-21-openjdk
+      - jenkins
     state: present
 
-- name: Ensure Java 17 is default
+- name: Ensure Java 21 is default
   ansible.builtin.command:
-    cmd: alternatives --set java /usr/lib/jvm/java-17-openjdk/bin/java
+    cmd: alternatives --set java /usr/lib/jvm/java-21-openjdk/bin/java
 
 - name: Install Jenkins Python Library
   ansible.builtin.dnf:
