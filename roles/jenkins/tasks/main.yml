@@ -11,16 +11,21 @@
     name:
       - fontconfig
       - java-17-openjdk
-      - jenkins
-    state: installed
+      - jenkins-2.462.3
+    state: present
 
 - name: Ensure Java 17 is default
-  ansible.builtin.shell: alternatives --set java /usr/lib/jvm/java-17-openjdk*/bin/java
+  ansible.builtin.command:
+    cmd: alternatives --set java /usr/lib/jvm/java-17-openjdk/bin/java
 
 - name: Install Jenkins Python Library
   ansible.builtin.dnf:
     name: python3-jenkins.noarch
-    state: installed
+    state: present
+
+- name: Reload systemd
+  ansible.builtin.systemd:
+    daemon_reload: true
 
 - name: Start Jenkins Service
   ansible.builtin.systemd_service:
