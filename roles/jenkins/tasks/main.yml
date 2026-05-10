@@ -10,12 +10,12 @@
   ansible.builtin.dnf:
     name:
       - fontconfig
-      - java-17-openjdk
+      - java-21-openjdk
       - jenkins
     state: installed
 
-- name: Ensure Java 17 is default
-  ansible.builtin.shell: alternatives --set java /usr/lib/jvm/java-17-openjdk*/bin/java
+#- name: Ensure Java 17 is default
+#  ansible.builtin.shell: alternatives --set java /usr/lib/jvm/java-17-openjdk*/bin/java
 
 - name: Install Jenkins Python Library
   ansible.builtin.dnf:
