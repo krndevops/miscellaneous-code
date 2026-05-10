@@ -6,11 +6,6 @@
     src: jenkins.repo
     dest: /etc/yum.repos.d/jenkins.repo
 
-- name: Remove old Jenkins
-  ansible.builtin.dnf:
-    name: jenkins
-    state: absent
-
 - name: Install Jenkins
   ansible.builtin.dnf:
     name:
